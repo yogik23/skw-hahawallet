@@ -14,7 +14,7 @@ const RETRY_DELAY = 2000;
 const ACCOUNTS_FILE = 'accounts.json';
 
 const spinner = ora({
-  color: '#5F9EA0',
+  color: "greenBright",
 });
 
 async function spinnerCD(seconds) {
