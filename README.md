@@ -19,11 +19,11 @@
     ```
     npm install
     ```
-3. Submit email & password di `skw.json`
+3. Submit email & password di `data.json`
     ```
-    nano skw.json
+    nano data.json
     ```
-   format skw.json
+   format data.json
     ```
     [
         {
