@@ -2,6 +2,7 @@ const axios = require('axios');
 const fs = require('fs');
 const chalk = require('chalk');
 const cron = require('node-cron');
+const userAgents = require('./skw/userAgents');
 
 const GRAPHQL_URL = 'https://prod.haha.me/wallet-api/graphql';
 const LOGIN_URL = 'https://prod.haha.me/users/login';
@@ -16,7 +17,6 @@ const {
   spinnerCD,
   table,
   updateTable,
-  getUserAgent,
   retry,
 } = require('./skw/jav.js');
 
@@ -32,7 +32,7 @@ function maskEmail(email) {
 async function loginAndRequest(email, password) {
     const HEADERS = {
         'Content-Type': 'application/json',
-        'User-Agent': getUserAgent(),
+        'User-Agent': userAgents[index],
         'Origin': 'chrome-extension://andhndehpcjpmneneealacgnmealilal'
     };
 
@@ -85,7 +85,7 @@ async function graphqlRequest(token, query, variables = {}) {
         timeout: TIMEOUT,
         headers: {
             Authorization: token,
-            'User-Agent': getUserAgent(),
+            'User-Agent': userAgents[index],
         }
     });
 
