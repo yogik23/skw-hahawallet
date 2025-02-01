@@ -105,7 +105,7 @@ async function startBot() {
     console.clear();
     displayskw();
   
-    await delay(2000);
+    await delay(4000);
   
     const accounts = loadAccounts(ACCOUNTS_FILE);
     if (accounts.length === 0) {
