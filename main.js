@@ -2,6 +2,7 @@ const axios = require('axios');
 const Table = require('cli-table3'); 
 const randomUserAgent = require('random-user-agent');
 const fs = require('fs');
+const ora = require("ora");
 
 const GRAPHQL_URL = 'https://prod.haha.me/wallet-api/graphql';
 const LOGIN_URL = 'https://prod.haha.me/users/login';
@@ -9,6 +10,28 @@ const TIMEOUT = 30000;
 const RETRIES = 3;
 const RETRY_DELAY = 2000;
 const ACCOUNTS_FILE = 'accounts.json';
+
+const spinner = ora({
+  color: "cyan",
+});
+
+async function spinnerCD(seconds) {
+    const spinner = ora().start();
+
+    return new Promise((resolve) => {
+        let countdown = seconds;
+        const countdownInterval = setInterval(() => {
+            if (countdown <= 0) {
+                clearInterval(countdownInterval);
+                spinner.succeed();
+                resolve();
+            } else {
+                spinner.text = `${countdown} detik...`;
+                countdown--;
+            }
+        }, 1000);
+    });
+}
 
 const table = new Table({
   head: ['Akun', 'Karma', 'Check-In', 'Karma New'],
@@ -128,6 +151,8 @@ async function main() {
         return;
     }
 
+    spinner.start('Memproses akun...');
+
     for (let index = 0; index < accounts.length; index++) {
         const { Email, Password } = accounts[index];
         if (Email && Password) {
@@ -178,6 +203,8 @@ async function main() {
             }
         }
     }
+
+    spinner.succeed('Proses selesai!');
 }
 
 main().catch(e => console.error(`Program gagal: ${e.message}`));
