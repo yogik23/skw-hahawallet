@@ -109,7 +109,6 @@ async function startBot() {
   
     const accounts = loadAccounts(ACCOUNTS_FILE);
     if (accounts.length === 0) {
-        console.log('Tidak ada akun untuk diproses.');
         return;
     }
 
