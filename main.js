@@ -56,7 +56,6 @@ async function loginAndRequest(email, password) {
         const token = response.data.id_token;
 
         if (token) {
-            console.log(`[${email}] Login berhasil. Token diterima.`);
             return token;
         } else {
             console.error(`[${email}] Login berhasil tetapi tidak mendapatkan token.`);
@@ -86,7 +85,6 @@ function loadAccounts(filePath) {
     try {
         const accounts = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
         if (Array.isArray(accounts)) {
-            console.log(`Berhasil memuat ${accounts.length} akun.`);
             return accounts;
         }
         console.error(`Format file '${filePath}' tidak valid.`);
@@ -129,9 +127,6 @@ async function main() {
         console.log('Tidak ada akun untuk diproses.');
         return;
     }
-
-    console.log(`Jumlah akun yang dimuat: ${accounts.length}`);
-    console.log('-'.repeat(60));
 
     for (let index = 0; index < accounts.length; index++) {
         const { Email, Password } = accounts[index];
@@ -183,8 +178,6 @@ async function main() {
             }
         }
     }
-
-    console.log('-'.repeat(60));
 }
 
 main().catch(e => console.error(`Program gagal: ${e.message}`));
