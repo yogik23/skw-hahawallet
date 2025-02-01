@@ -154,7 +154,7 @@ async function startBot() {
         return;
     }
 
-    spinner.start('Memproses akun...');
+    spinner.start( );
 
     for (let index = 0; index < accounts.length; index++) {
         const { Email, Password } = accounts[index];
@@ -207,7 +207,7 @@ async function startBot() {
         }
     }
 
-    spinner.succeed(' Proses selesai untuk hari ini');
+    spinner.succeed(chalk.hex('#00FF7F')(' Proses selesai untuk hari ini'));
     console.log(chalk.hex('#9ACD32')(` Autobot Haha Wallet by SKW AIRDROP`));
 }
 
