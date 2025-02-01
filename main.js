@@ -3,6 +3,8 @@ const Table = require('cli-table3');
 const randomUserAgent = require('random-user-agent');
 const fs = require('fs');
 const ora = require("ora");
+const chalk = require('chalk');
+const cron = require('node-cron');
 
 const GRAPHQL_URL = 'https://prod.haha.me/wallet-api/graphql';
 const LOGIN_URL = 'https://prod.haha.me/users/login';
@@ -12,7 +14,7 @@ const RETRY_DELAY = 2000;
 const ACCOUNTS_FILE = 'accounts.json';
 
 const spinner = ora({
-  color: "cyan",
+  color: '#5F9EA0',
 });
 
 async function spinnerCD(seconds) {
@@ -144,7 +146,8 @@ function updateTable() {
     console.log(table.toString());
 }
 
-async function main() {
+async function startBot() {
+    console.clear();
     const accounts = loadAccounts(ACCOUNTS_FILE);
     if (accounts.length === 0) {
         console.log('Tidak ada akun untuk diproses.');
@@ -204,7 +207,22 @@ async function main() {
         }
     }
 
-    spinner.succeed('Proses selesai!');
+    spinner.succeed(' Proses selesai untuk hari ini');
+    console.log(chalk.hex('#9ACD32')(` Autobot Haha Wallet by SKW AIRDROP`));
 }
 
-main().catch(e => console.error(`Program gagal: ${e.message}`));
+async function main() {
+    cron.schedule('0 1 * * *', async () => { 
+        await startBot();
+        console.log();
+        console.log(chalk.hex('#FF00FF')(`Cron AKTIF`));
+        console.log(chalk.hex('#FF1493')('Jam 08:00 WIB Autobot Akan Run'));
+    });
+
+    await startBot();
+    console.log();
+    console.log(chalk.hex('#FF00FF')(`Cron AKTIF`));
+    console.log(chalk.hex('#FF1493')('Jam 08:00 WIB Autobot Akan Run'));
+}
+
+main();
