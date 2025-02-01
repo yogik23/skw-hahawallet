@@ -3,7 +3,7 @@ const fs = require('fs');
 const chalk = require('chalk');
 const cron = require('node-cron');
 const userAgents = require('./skw/userAgents');
-const displayskw = require('./skw/diskw');
+const { displayskw } = require('./skw/diskw');
 
 const GRAPHQL_URL = 'https://prod.haha.me/wallet-api/graphql';
 const LOGIN_URL = 'https://prod.haha.me/users/login';
