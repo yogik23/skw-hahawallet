@@ -9,7 +9,7 @@ const LOGIN_URL = 'https://prod.haha.me/users/login';
 const TIMEOUT = 30000;
 const RETRIES = 3;
 const RETRY_DELAY = 2000;
-const ACCOUNTS_FILE = 'skw.json';
+const ACCOUNTS_FILE = 'data.json';
 
 const {
   delay,
@@ -29,7 +29,7 @@ function maskEmail(email) {
     }
 }
 
-async function loginAndRequest(email, password) {
+async function loginAndRequest(email, password, index) {
     const HEADERS = {
         'Content-Type': 'application/json',
         'User-Agent': userAgents[index],
@@ -79,7 +79,7 @@ function loadAccounts(filePath) {
     }
 }
 
-async function graphqlRequest(token, query, variables = {}) {
+async function graphqlRequest(token, query, index, variables = {}) {
     const client = axios.create({
         baseURL: GRAPHQL_URL,
         timeout: TIMEOUT,
@@ -108,13 +108,13 @@ async function startBot() {
         return;
     }
 
-    spinner.start( );
+    spinner.start();
 
     for (let index = 0; index < accounts.length; index++) {
         const { Email, Password } = accounts[index];
         if (Email && Password) {
             try {
-                const token = await loginAndRequest(Email, Password);
+                const token = await loginAndRequest(Email, Password, index);
                 if (token) {
                     let row = [maskEmail(Email)];
 
@@ -127,7 +127,7 @@ async function startBot() {
                             rankImage
                         }
                     }`;
-                    const data = await graphqlRequest(token, query);
+                    const data = await graphqlRequest(token, query, index);
                     if (data.getRankInfo) {
                         row.push(data.getRankInfo.karma || 'N/A');
                     } else {
@@ -137,7 +137,7 @@ async function startBot() {
                     const checkinQuery = `query {
                         getDailyCheckIn
                     }`;
-                    const checkinData = await graphqlRequest(token, checkinQuery);
+                    const checkinData = await graphqlRequest(token, checkinQuery, index);
                     if (checkinData.getDailyCheckIn !== undefined) {
                         row.push(checkinData.getDailyCheckIn ? 'Dapat Klaim' : 'Sudah Klaim');
                     } else {
@@ -145,7 +145,7 @@ async function startBot() {
                     }
 
                     const balanceQuery = `{ getKarmaPoints }`;
-                    const balanceData = await graphqlRequest(token, balanceQuery);
+                    const balanceData = await graphqlRequest(token, balanceQuery, index);
                     if (balanceData.getKarmaPoints) {
                         row.push(balanceData.getKarmaPoints || 'N/A');
                     } else {
@@ -162,7 +162,7 @@ async function startBot() {
     }
 
     spinner.succeed(chalk.hex('#00FF7F')(' Proses selesai untuk hari ini'));
-    console.log(chalk.hex('#9ACD32')(`   Autobot Haha Wallet by SKW AIRDROP`));
+    console.log(chalk.hex('#9ACD32')('   Autobot Haha Wallet by SKW AIRDROP'));
 }
 
 async function main() {
