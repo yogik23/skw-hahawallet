@@ -3,6 +3,7 @@ const fs = require('fs');
 const chalk = require('chalk');
 const cron = require('node-cron');
 const userAgents = require('./skw/userAgents');
+const displayskw = require('./skw/diskw');
 
 const GRAPHQL_URL = 'https://prod.haha.me/wallet-api/graphql';
 const LOGIN_URL = 'https://prod.haha.me/users/login';
@@ -102,6 +103,9 @@ async function graphqlRequest(token, query, index, variables = {}) {
 
 async function startBot() {
     console.clear();
+    displayskw();
+    await delay(2000);
+  
     const accounts = loadAccounts(ACCOUNTS_FILE);
     if (accounts.length === 0) {
         console.log('Tidak ada akun untuk diproses.');
