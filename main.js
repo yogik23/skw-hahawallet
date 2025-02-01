@@ -104,6 +104,7 @@ async function graphqlRequest(token, query, index, variables = {}) {
 async function startBot() {
     console.clear();
     displayskw();
+  
     await delay(2000);
   
     const accounts = loadAccounts(ACCOUNTS_FILE);
