@@ -1,5 +1,5 @@
 {
-  "name": "nhah",
+  "name": "HAHA Wallet",
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
@@ -12,7 +12,10 @@
   "description": "",
   "dependencies": {
     "axios": "^1.7.9",
+    "chalk": "^3.0.0",
     "cli-table3": "^0.6.5",
+    "node-cron": "^3.0.3",
+    "ora": "^5.0.0",
     "random-user-agent": "^1.0.0"
   }
 }
