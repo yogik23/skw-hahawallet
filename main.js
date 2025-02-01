@@ -208,7 +208,7 @@ async function startBot() {
     }
 
     spinner.succeed(chalk.hex('#00FF7F')(' Proses selesai untuk hari ini'));
-    console.log(chalk.hex('#9ACD32')(` Autobot Haha Wallet by SKW AIRDROP`));
+    console.log(chalk.hex('#9ACD32')(`   Autobot Haha Wallet by SKW AIRDROP`));
 }
 
 async function main() {
