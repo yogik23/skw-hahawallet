@@ -101,12 +101,30 @@ async function graphqlRequest(token, query, index, variables = {}) {
     }
 }
 
+async function claimDailyCheckIn(token, index) {
+    const claimCheckinMutation = `
+        mutation ($timezone: String) {
+            setDailyCheckIn(timezone: $timezone)
+        }
+    `;
+
+    const variables = { timezone: 'Asia/Jakarta' };
+
+    const result = await graphqlRequest(token, claimCheckinMutation, index, variables);
+    if (result.setDailyCheckIn) {
+        return true;
+    } else {
+        console.error(chalk.red(`[${index}] Klaim gagal: ${result.setDailyCheckIn?.message || 'Unknown error'}`));
+        return false;
+    }
+}
+
 async function startBot() {
     console.clear();
     displayskw();
-  
+
     await delay(4000);
-  
+
     const accounts = loadAccounts(ACCOUNTS_FILE);
     if (accounts.length === 0) {
         return;
@@ -122,6 +140,19 @@ async function startBot() {
                 if (token) {
                     let row = [maskEmail(Email)];
 
+                    const checkinQuery = `query { getDailyCheckIn }`;
+                    const checkinData = await graphqlRequest(token, checkinQuery, index);
+                    if (checkinData.getDailyCheckIn !== undefined) {
+                        if (checkinData.getDailyCheckIn) {
+                            const claimSuccess = await claimDailyCheckIn(token, index);
+                            row.push(claimSuccess ? 'Berhasil Klaim' : 'Gagal Klaim');
+                        } else {
+                            row.push('Sudah Klaim');
+                        }
+                    } else {
+                        row.push('Gagal');
+                    }
+
                     const query = `{
                         getRankInfo {
                             rank
@@ -131,22 +162,6 @@ async function startBot() {
                             rankImage
                         }
                     }`;
-                    const data = await graphqlRequest(token, query, index);
-                    if (data.getRankInfo) {
-                        row.push(data.getRankInfo.karma || 'N/A');
-                    } else {
-                        row.push('Gagal');
-                    }
-
-                    const checkinQuery = `query {
-                        getDailyCheckIn
-                    }`;
-                    const checkinData = await graphqlRequest(token, checkinQuery, index);
-                    if (checkinData.getDailyCheckIn !== undefined) {
-                        row.push(checkinData.getDailyCheckIn ? 'Dapat Klaim' : 'Sudah Klaim');
-                    } else {
-                        row.push('Gagal');
-                    }
 
                     const balanceQuery = `{ getKarmaPoints }`;
                     const balanceData = await graphqlRequest(token, balanceQuery, index);
