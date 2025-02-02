@@ -4,7 +4,6 @@
 ## Fitur Autobot
 - Auto Claim Daily Karma
 - Multi Akun
-- Quest Tx Hanya support APK,Ekstensi tidak ada
 
 ## [Link Testnet](https://chromewebstore.google.com/detail/haha-wallet/andhndehpcjpmneneealacgnmealilal)
     DITO-HJ3R6K
