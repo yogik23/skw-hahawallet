@@ -27,8 +27,8 @@ async function spinnerCD(seconds) {
 }
 
 const table = new Table({
-  head: ['Akun', 'Karma', 'Check-In', 'Karma New'],
-  colWidths: [30, 20, 20, 20],
+  head: ['Akun', 'Check-In', 'Total Karma'],
+  colWidths: [30, 20, 20],
   style: { head: ['green'], border: ['yellow'] }
 });
 
